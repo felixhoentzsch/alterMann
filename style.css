@@ -440,8 +440,8 @@ a.popup-title:hover {
 .windmill-container {
     position: absolute;
     right: 8%; /* Platziert sie weit rechts auf dem Bildschirm */
-    bottom: 25px; /* Taucht sie etwas ins Gras ein */
-    width: 300px; 
+    bottom: 27px; /* Taucht sie etwas ins Gras ein */
+    width: 350px; 
     z-index: 1; /* Legt sie vor den hinteren Hügel, aber hinter den vorderen Hügel */
     filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
 }
@@ -464,4 +464,29 @@ a.popup-title:hover {
 @keyframes spinBlades {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* --- DER NAVIGATION-BUTTON IM POPUP --- */
+.nav-button {
+    display: block;
+    background-color: #f97316; /* Unser schönes Oranje */
+    color: white;
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 6px rgba(249, 115, 22, 0.2);
+    transition: all 0.2s ease;
+}
+
+/* Hover-Effekt, wenn man mit der Maus drüberfährt (für den Laptop) */
+.nav-button:hover {
+    background-color: #ea580c; /* Etwas dunkleres Orange */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(249, 115, 22, 0.3);
+    color: white;
 }

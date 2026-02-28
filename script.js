@@ -618,7 +618,7 @@ function initMap(instant = false) {
 
     ];
 
-    places.forEach(place => {
+places.forEach(place => {
         const icon = L.divIcon({ className: 'custom-emoji-marker', html: place.emoji, iconSize: [40, 40], iconAnchor: [20, 20], popupAnchor: [0, -20] });
 
         let titleHtml = place.cat !== 'funfacts' 
@@ -639,8 +639,15 @@ function initMap(instant = false) {
 
         let imageHtml = (place.img && place.img.trim() !== '') ? `<img src="${place.img}" alt="${place.title}" class="popup-header-img">` : '';
 
-        const popupContent = `<div class="modern-popup">${imageHtml}<div class="popup-body">${titleHtml}<p class="popup-desc">${place.desc}</p>${toggleHtml}</div></div>`;
+        // Der offizielle Google Maps Navigations-Link (Startet Route ab aktuellem Standort)
+        const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
+        // Den Button zeigen wir überall, wo es Sinn macht (ich hab ihn jetzt auch bei FunFacts drin gelassen, falls man hinlaufen will!)
+        const navButtonHtml = `<a href="${navUrl}" target="_blank" class="nav-button">📍 Hierhin navigieren</a>`;
 
+        // Alles zusammenbauen:
+        const popupContent = `<div class="modern-popup">${imageHtml}<div class="popup-body">${titleHtml}<p class="popup-desc">${place.desc}</p>${navButtonHtml}${toggleHtml}</div></div>`;
+
+        // Marker auf die Karte setzen:
         L.marker([place.lat, place.lng], { icon: icon }).bindPopup(popupContent).addTo(categoryLayers[place.cat]);
     });
 
