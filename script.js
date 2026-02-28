@@ -81,7 +81,6 @@ function saveProgress() {
 
 
 function initMap(instant = false) {
-    let markersById = {};
     const startCoords = instant ? [52.3676, 4.9041] : [45.0, 10.0];
     const startZoom = instant ? 14 : 4;
 
@@ -102,8 +101,10 @@ function initMap(instant = false) {
         funfacts: L.layerGroup(),
         shopping: L.layerGroup(),
         aktivitaeten: L.layerGroup(),
-        mauri: L.layerGroup()
+        mauri: L.layerGroup() 
     };
+
+    let markersById = {};
 
     // --- UNSERE DATENBANK ---
     const places = [
@@ -620,13 +621,20 @@ function initMap(instant = false) {
     ];
 
 places.forEach(place => {
-        // Prüfen, ob der Ort schon aus dem Speicher als "besucht" gilt
+        // Prüfen, ob der Ort schon besucht wurde
         let isVisited = visitedPlaces.has(place.id);
         
-        // Wenn besucht, geben wir ihm direkt die CSS-Klasse für den grünen Haken mit!
-        let markerClass = isVisited ? 'custom-emoji-marker visited-marker' : 'custom-emoji-marker';
+        // NEU: Wir packen das Emoji UND den Haken zusammen in das HTML.
+        // Wenn es besucht ist, bekommt der Haken direkt die Klasse 'visible'.
+        let htmlContent = `
+            <div class="marker-content">
+                <span class="emoji">${place.emoji}</span>
+                <div class="check-badge ${isVisited ? 'visible' : ''}" id="badge-${place.id}">✓</div>
+            </div>
+        `;
 
-        const icon = L.divIcon({ className: markerClass, html: place.emoji, iconSize: [40, 40], iconAnchor: [20, 20], popupAnchor: [0, -20] });
+        // Die className bleibt jetzt immer sauber und sicher auf 'custom-emoji-marker'
+        const icon = L.divIcon({ className: 'custom-emoji-marker', html: htmlContent, iconSize: [40, 40], iconAnchor: [20, 20], popupAnchor: [0, -20] });
 
         let titleHtml = place.cat !== 'funfacts' 
             ? `<a href="https://www.google.com/search?q=${encodeURIComponent(place.title + ' Amsterdam')}" target="_blank" class="popup-title">${place.title} 🔍</a>`
@@ -646,15 +654,14 @@ places.forEach(place => {
 
         let imageHtml = (place.img && place.img.trim() !== '') ? `<img src="${place.img}" alt="${place.title}" class="popup-header-img">` : '';
 
-        // TIPP: Ich habe hier direkt den korrigierten Google Maps Navigations-Link eingebaut!
+        // KORRIGIERTER Google Maps Link (öffnet direkt die Navigation zum Ziel)
         const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
         const navButtonHtml = `<a href="${navUrl}" target="_blank" class="nav-button">📍 Hierhin navigieren</a>`;
 
         const popupContent = `<div class="modern-popup">${imageHtml}<div class="popup-body">${titleHtml}<p class="popup-desc">${place.desc}</p>${navButtonHtml}${toggleHtml}</div></div>`;
 
-        // Marker auf die Karte setzen UND im neuen 'markersById' Verzeichnis speichern
-        const marker = L.marker([place.lat, place.lng], { icon: icon }).bindPopup(popupContent).addTo(categoryLayers[place.cat]);
-        markersById[place.id] = marker; 
+        // Marker ganz normal auf die Karte setzen
+        L.marker([place.lat, place.lng], { icon: icon }).bindPopup(popupContent).addTo(categoryLayers[place.cat]);
     });
 
     const addPins = () => {
@@ -666,7 +673,7 @@ places.forEach(place => {
         for (let key in categoryLayers) { categoryLayers[key].addTo(map); }
     };
 
-    map.on('popupopen', function(e) {
+map.on('popupopen', function(e) {
         const checkbox = e.popup._contentNode.querySelector('.visited-cb-hidden');
         if (checkbox) {
             const placeId = parseInt(checkbox.getAttribute('data-id'));
@@ -674,18 +681,14 @@ places.forEach(place => {
 
             // onchange verhindert, dass das Skript doppelt auslöst, wenn man das Popup mehrfach öffnet
             checkbox.onchange = function() {
+                const badge = document.getElementById(`badge-${placeId}`); // Sucht genau unseren kleinen Haken
+
                 if (this.checked) { 
                     visitedPlaces.add(placeId); 
-                    // Setze den Haken auf der Karte!
-                    if (markersById[placeId] && markersById[placeId].getElement()) {
-                        markersById[placeId].getElement().classList.add('visited-marker');
-                    }
+                    if (badge) badge.classList.add('visible'); // Haken einblenden
                 } else { 
                     visitedPlaces.delete(placeId); 
-                    // Entferne den Haken auf der Karte!
-                    if (markersById[placeId] && markersById[placeId].getElement()) {
-                        markersById[placeId].getElement().classList.remove('visited-marker');
-                    }
+                    if (badge) badge.classList.remove('visible'); // Haken ausblenden
                 }
                 
                 saveProgress(); 
@@ -693,6 +696,7 @@ places.forEach(place => {
             };
         }
     });
+
 
     // NEU: Wir rufen updateProgress() direkt auf, damit der Balken beim Laden der Seite den gespeicherten Stand anzeigt!
     if (instant) { 
