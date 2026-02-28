@@ -490,3 +490,29 @@ a.popup-title:hover {
     box-shadow: 0 6px 12px rgba(249, 115, 22, 0.3);
     color: white;
 }
+
+/* --- GRÜNER HAKEN AUF BESUCHTEN MARKERN --- */
+.custom-emoji-marker {
+    position: relative; /* Wichtig, damit der Haken an der richtigen Stelle klebt */
+}
+
+/* Der grüne Haken wird eingeblendet, wenn der Marker die Klasse 'visited-marker' hat */
+.custom-emoji-marker.visited-marker::after {
+    content: '✓';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #22c55e; /* Schönes, sattes Grün */
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border: 2px solid white;
+    z-index: 10;
+}

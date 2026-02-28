@@ -81,6 +81,7 @@ function saveProgress() {
 
 
 function initMap(instant = false) {
+    let markersById = {};
     const startCoords = instant ? [52.3676, 4.9041] : [45.0, 10.0];
     const startZoom = instant ? 14 : 4;
 
@@ -619,7 +620,13 @@ function initMap(instant = false) {
     ];
 
 places.forEach(place => {
-        const icon = L.divIcon({ className: 'custom-emoji-marker', html: place.emoji, iconSize: [40, 40], iconAnchor: [20, 20], popupAnchor: [0, -20] });
+        // Prüfen, ob der Ort schon aus dem Speicher als "besucht" gilt
+        let isVisited = visitedPlaces.has(place.id);
+        
+        // Wenn besucht, geben wir ihm direkt die CSS-Klasse für den grünen Haken mit!
+        let markerClass = isVisited ? 'custom-emoji-marker visited-marker' : 'custom-emoji-marker';
+
+        const icon = L.divIcon({ className: markerClass, html: place.emoji, iconSize: [40, 40], iconAnchor: [20, 20], popupAnchor: [0, -20] });
 
         let titleHtml = place.cat !== 'funfacts' 
             ? `<a href="https://www.google.com/search?q=${encodeURIComponent(place.title + ' Amsterdam')}" target="_blank" class="popup-title">${place.title} 🔍</a>`
@@ -639,16 +646,15 @@ places.forEach(place => {
 
         let imageHtml = (place.img && place.img.trim() !== '') ? `<img src="${place.img}" alt="${place.title}" class="popup-header-img">` : '';
 
-        // Der offizielle Google Maps Navigations-Link (Startet Route ab aktuellem Standort)
+        // TIPP: Ich habe hier direkt den korrigierten Google Maps Navigations-Link eingebaut!
         const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
-        // Den Button zeigen wir überall, wo es Sinn macht (ich hab ihn jetzt auch bei FunFacts drin gelassen, falls man hinlaufen will!)
         const navButtonHtml = `<a href="${navUrl}" target="_blank" class="nav-button">📍 Hierhin navigieren</a>`;
 
-        // Alles zusammenbauen:
         const popupContent = `<div class="modern-popup">${imageHtml}<div class="popup-body">${titleHtml}<p class="popup-desc">${place.desc}</p>${navButtonHtml}${toggleHtml}</div></div>`;
 
-        // Marker auf die Karte setzen:
-        L.marker([place.lat, place.lng], { icon: icon }).bindPopup(popupContent).addTo(categoryLayers[place.cat]);
+        // Marker auf die Karte setzen UND im neuen 'markersById' Verzeichnis speichern
+        const marker = L.marker([place.lat, place.lng], { icon: icon }).bindPopup(popupContent).addTo(categoryLayers[place.cat]);
+        markersById[place.id] = marker; 
     });
 
     const addPins = () => {
@@ -659,6 +665,34 @@ places.forEach(place => {
 
         for (let key in categoryLayers) { categoryLayers[key].addTo(map); }
     };
+
+    map.on('popupopen', function(e) {
+        const checkbox = e.popup._contentNode.querySelector('.visited-cb-hidden');
+        if (checkbox) {
+            const placeId = parseInt(checkbox.getAttribute('data-id'));
+            checkbox.checked = visitedPlaces.has(placeId);
+
+            // onchange verhindert, dass das Skript doppelt auslöst, wenn man das Popup mehrfach öffnet
+            checkbox.onchange = function() {
+                if (this.checked) { 
+                    visitedPlaces.add(placeId); 
+                    // Setze den Haken auf der Karte!
+                    if (markersById[placeId] && markersById[placeId].getElement()) {
+                        markersById[placeId].getElement().classList.add('visited-marker');
+                    }
+                } else { 
+                    visitedPlaces.delete(placeId); 
+                    // Entferne den Haken auf der Karte!
+                    if (markersById[placeId] && markersById[placeId].getElement()) {
+                        markersById[placeId].getElement().classList.remove('visited-marker');
+                    }
+                }
+                
+                saveProgress(); 
+                updateProgress(); 
+            };
+        }
+    });
 
     // NEU: Wir rufen updateProgress() direkt auf, damit der Balken beim Laden der Seite den gespeicherten Stand anzeigt!
     if (instant) { 
