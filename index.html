@@ -23,12 +23,20 @@
 
         <div class="meadow-container">
             <svg class="grass back-hills" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="#4ade80" fill-opacity="1" d="M0,192L60,186.7C120,181,240,171,360,176C480,181,600,203,720,208C840,213,960,203,1080,192C1200,181,1320,171,1380,165.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
-            <div class="windmill-container">
+<div class="windmill-container" style="z-index: 10;">
                 <svg class="windmill" viewBox="0 0 100 120">
                     <path d="M 30 120 L 70 120 L 65 50 L 35 50 Z" fill="#b45309" />
                     <path d="M 32 50 Q 50 30 68 50 Z" fill="#78350f" />
-                    <path d="M 45 120 L 45 100 Q 50 95 55 100 L 55 120 Z" fill="#78350f" />
                     <rect x="46" y="70" width="8" height="10" fill="#fef08a" rx="2" />
+                    
+                    <a href="quiz.html" class="quiz-door" style="cursor: pointer; pointer-events: auto;">
+                        <rect x="30" y="80" width="40" height="12" fill="#fde047" rx="2" stroke="#78350f" stroke-width="1" />
+                        <text x="50" y="88" font-size="5" font-family="Inter, sans-serif" font-weight="bold" fill="#78350f" text-anchor="middle">QUIZRAUM</text>
+                        <line x1="38" y1="92" x2="38" y2="95" stroke="#78350f" stroke-width="1.5" />
+                        <line x1="62" y1="92" x2="62" y2="95" stroke="#78350f" stroke-width="1.5" />
+                        
+                        <path d="M 40 120 L 40 95 Q 50 88 60 95 L 60 120 Z" fill="#451a03" stroke="#fde047" stroke-width="1" />
+                        <circle cx="56" cy="108" r="1.5" fill="#fde047"/> </a>
                     
                     <g class="blades">
                         <rect x="48" y="5" width="4" height="90" fill="#334155" />
