@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das große 50. Geburtstags-Quiz! 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #facc15;
+            --gold-dark: #b45309;
+            --gold-glow: rgba(250, 204, 21, 0.6);
+            --blue-glow: rgba(56, 189, 248, 0.8);
+            --bg-dark: #020617;
+            --bg-light: #1e1b4b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 40%, var(--bg-light) 0%, var(--bg-dark) 70%),
+                linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 40%);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* --- STUDIO HINTERGRUND-EFFEKTE --- */
+        .neon-50 {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 35vw;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 4px rgba(250, 204, 21, 0.2);
+            text-shadow: 0 0 50px rgba(250, 204, 21, 0.1), 0 0 150px rgba(250, 204, 21, 0.1);
+            z-index: 1;
+            pointer-events: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .spotlight {
+            position: absolute;
+            bottom: -10%;
+            width: 15vw;
+            height: 120vh;
+            background: linear-gradient(to top, rgba(56, 189, 248, 0.4) 0%, transparent 80%);
+            filter: blur(20px);
+            z-index: 2;
+            transform-origin: bottom center;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+        .spotlight-left { left: 10%; animation: swingLeft 7s infinite alternate ease-in-out; }
+        .spotlight-right { right: 10%; background: linear-gradient(to top, rgba(250, 204, 21, 0.3) 0%, transparent 80%); animation: swingRight 9s infinite alternate ease-in-out; }
+
+        @keyframes swingLeft { 0% { transform: rotate(-30deg) scaleY(1); } 100% { transform: rotate(10deg) scaleY(1.2); } }
+        @keyframes swingRight { 0% { transform: rotate(30deg) scaleY(1); } 100% { transform: rotate(-15deg) scaleY(1.1); } }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #facc15, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 90px 40px, #facc15, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: floatParticles 40s linear infinite;
+            opacity: 0.4;
+        }
+        @keyframes floatParticles { 0% { transform: translateY(0); } 100% { transform: translateY(-400px); } }
+
+        .on-air-link {
+            text-decoration: none;
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            z-index: 20;
+        }
+
+
+        .on-air {
+            border: 2px solid #ef4444;
+            color: #ef4444;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+            animation: blink 2s infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); text-shadow: 0 0 10px #ef4444; }
+            50% { opacity: 0.4; box-shadow: 0 0 5px rgba(239, 68, 68, 0.2); text-shadow: none; }
+        }
+
+        .on-air-link:hover .on-air {
+            background-color: #ef4444;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #ef4444;
+        }      
+
+        /* --- STUDIO LAYOUT --- */
+        .studio {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .header-container {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-banner {
+            background: linear-gradient(to bottom, #1e293b, #0f172a);
+            padding: 15px 50px;
+            border-radius: 50px;
+            border: 2px solid #334155;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+        .header-banner h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .led-scoreboard {
+            background: #000;
+            border: 4px solid #333;
+            padding: 10px 30px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 20px rgba(34, 197, 94, 0.2), 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .money-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #22c55e;
+            text-shadow: 0 0 10px #22c55e, 0 0 20px #16a34a;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        /* --- KANDIDAT & QUIZMASTER --- */
+        .person-container {
+            position: absolute;
+            bottom: 12%;
+            width: 200px;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .candidate-side { left: 8%; }
+        .quizmaster-side { right: 8%; }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 4px solid #475569;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #64748b;
+            font-size: 1rem;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .photo-placeholder::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 16px; box-shadow: inset 0 0 15px rgba(255,255,255,0.1); pointer-events: none;
+        }
+        .photo-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+
+        .label-tag {
+            background: linear-gradient(to bottom, #eab308, #b45309);
+            color: #000;
+            padding: 8px 25px;
+            font-weight: 900;
+            border-radius: 30px;
+            margin-top: -15px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border: 2px solid #fef08a;
+            z-index: 2;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        /* --- DER STUDIO-TISCH --- */
+        .main-stage {
+            position: absolute;
+            bottom: -8%;
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse at center, #1e293b 0%, #020617 80%);
+            border: 8px solid #0369a1;
+            border-radius: 50%;
+            box-shadow: 
+                0 -10px 50px var(--blue-glow),
+                inset 0 0 60px rgba(56, 189, 248, 0.4),
+                inset 0 20px 20px rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .main-stage::before {
+            content: ''; position: absolute; top: -15px; left: -15px; right: -15px; bottom: -15px;
+            border-radius: 50%; border: 2px solid rgba(56, 189, 248, 0.5); animation: pulseRing 3s infinite;
+        }
+        @keyframes pulseRing { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 0; } }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 80%;
+            height: fit-content;
+            z-index: 5;
+        }
+        .category-card {
+            background: linear-gradient(145deg, #1e1b4b, #312e81);
+            border: 2px solid #4f46e5;
+            border-radius: 12px;
+            padding: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .category-card:hover:not(.disabled) {
+            transform: translateY(-5px); border-color: var(--gold); box-shadow: 0 0 25px var(--gold-glow); background: #3730a3; color: var(--gold);
+        }
+        .category-card.disabled {
+            border-color: #059669; background: linear-gradient(145deg, #064e3b, #022c22); color: #6ee7b7; cursor: not-allowed; opacity: 0.8; box-shadow: inset 0 0 20px rgba(5, 150, 105, 0.3);
+        }
+        
+        .prize-tag {
+            color: var(--gold);
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .check-icon { display: none; font-size: 1.4rem; }
+        .category-card.disabled .check-icon { display: block; }
+
+        /* --- QUIZ UI --- */
+        .quiz-overlay {
+            display: none;
+            position: absolute;
+            bottom: 8%;
+            width: 90%;
+            max-width: 900px;
+            flex-direction: column;
+            z-index: 30;
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .question-box {
+            background: linear-gradient(180deg, #0f172a, #1e3a8a);
+            border: 3px solid var(--gold);
+            padding: 30px 50px;
+            text-align: center;
+            border-radius: 40px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 30px var(--gold-glow);
+            color: #fff;
+            position: relative;
+        }
+        .question-box::before { content: ''; position: absolute; left: 0; right: 0; top: 10px; height: 1px; background: rgba(255,255,255,0.1); }
+
+        .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .answer-btn {
+            background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+            border: 2px solid #60a5fa;
+            padding: 20px 30px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.2s;
+            text-align: left;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+        }
+        .answer-btn:hover { border-color: var(--gold); background: linear-gradient(90deg, #b45309 0%, var(--gold) 50%, #b45309 100%); color: #000; box-shadow: 0 0 25px var(--gold-glow); transform: scale(1.03); }
+        .letter { color: #facc15; font-weight: 900; font-size: 1.3rem; margin-right: 15px; }
+        .answer-btn:hover .letter { color: #fff; }
+
+        /* --- GEWINN POPUP --- */
+        .win-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            background: radial-gradient(circle at top, #312e81, #020617);
+            border: 4px solid var(--gold);
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 0 150px rgba(0,0,0,0.9), 0 0 60px var(--gold-glow);
+            z-index: 100;
+            animation: popIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 80%;
+            max-width: 500px;
+        }
+        .win-popup h2 { font-size: 3.5rem; margin: 0 0 15px 0; color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
+        .win-popup p { font-size: 1.4rem; margin: 0 0 30px 0; line-height: 1.5; }
+        .win-popup .amount { font-size: 3rem; color: #22c55e; font-family: 'Orbitron', sans-serif; font-weight: 900; display: block; margin: 15px 0;}
+        .win-popup button {
+            background: linear-gradient(to bottom, #22c55e, #16a34a); border: 2px solid #86efac; padding: 15px 40px; color: white;
+            font-size: 1.2rem; font-weight: 800; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: transform 0.2s;
+        }
+        .win-popup button:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+    <div class="neon-50">50</div>
+    <div class="spotlight spotlight-left"></div>
+    <div class="spotlight spotlight-right"></div>
+    <div class="particles"></div>
+    <a href="index.html" class="on-air-link">
+        <div class="on-air">ON AIR</div>
+    </a>
+
+    <div class="studio">
+        
+        <div class="header-container">
+            <div class="header-banner">
+                <h1>✨ Das große Geburtstags-Quiz zum 50. ✨</h1>
+            </div>
+            <div class="led-scoreboard">
+                <div class="money-display" id="total-money">0 €</div>
+            </div>
+        </div>
+
+        <!-- KANDIDATIN (LINKS) -->
+        <div class="person-container candidate-side">
+            <div class="photo-placeholder">
+                <!-- HIER IST DER IMG-TAG -->
+                <img src="Bilder/Geburtstagskind.png" alt="Geburtstagskind">
+            </div>
+            <div class="label-tag">Geburtstagskind</div>
+        </div>
+
+        <!-- QUIZMASTER (RECHTS) -->
+        <div class="person-container quizmaster-side">
+            <div class="photo-placeholder" id="quizmaster-photo-box">
+                <span id="quizmaster-photo-text">📸<br>Warte auf<br>Auswahl...</span>
+            </div>
+            <div class="label-tag" id="quizmaster-label">Quizmaster</div>
+        </div>
+
+        <!-- DER GROSSE TISCH -->
+        <div class="main-stage">
+            
+            <div class="category-grid" id="category-selector">
+                <div class="category-card" id="cat-0" onclick="startCategory(0)">
+                    <div><span class="prize-tag">150 €</span><span>1. Mama & Papa</span></div> <span class="check-icon">✔️</span>
+                </div>
+                <div class="category-card" id="cat-1" onclick="startCategory(1)">
+                    <div><span class="prize-tag">100 €</span><span>2. Sven</span></div> <span class="check-icon">✔️</span>
+                </div>
+                <div class="category-card" id="cat-2" onclick="startCategory(2)">
+                    <div><span class="prize-tag">100 €</span><span>3. Felix</span></div> <span class="check-icon">✔️</span>
+                </div>
+                <div class="category-card" id="cat-3" onclick="startCategory(3)">
+                    <div><span class="prize-tag">50 €</span><span>4. Fabian</span></div> <span class="check-icon">✔️</span>
+                </div>
+                <div class="category-card" id="cat-4" onclick="startCategory(4)">
+                    <div><span class="prize-tag">70 €</span><span>5. Maja</span></div> <span class="check-icon">✔️</span>
+                </div>
+                <div class="category-card" id="cat-5" onclick="startCategory(5)">
+                    <div><span class="prize-tag">den Rest :) €</span><span>6. Marko</span></div> <span class="check-icon">✔️</span>
+                </div>
+            </div>
+
+            <div class="quiz-overlay" id="quiz-ui">
+                <div class="question-box" id="question-text">Frage lädt...</div>
+                <div class="answers-grid">
+                    <button class="answer-btn" onclick="checkAnswer(0)"><span class="letter">A:</span> <span id="ans-0"></span></button>
+                    <button class="answer-btn" onclick="checkAnswer(1)"><span class="letter">B:</span> <span id="ans-1"></span></button>
+                    <button class="answer-btn" onclick="checkAnswer(2)"><span class="letter">C:</span> <span id="ans-2"></span></button>
+                    <button class="answer-btn" onclick="checkAnswer(3)"><span class="letter">D:</span> <span id="ans-3"></span></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Gewinn-Popup -->
+    <div class="win-popup" id="win-popup">
+        <h2>Richtig!</h2>
+        <p>Kategorie gemeistert! Du gewinnst:</p>
+        <span class="amount" id="win-amount">+ 0 €</span>
+        <button onclick="closeWinPopup()">Weiter spielen</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        // DAS DATEN ARRAY - MIT INDIVIDUELLEN PREISEN (prize)
+        const quizData = [
+            { 
+                host: "Mama & Papa", 
+                img: "Bilder/MamaPapa.png",
+                prize: 150, // <-- Individueller Betrag!
+                questions: [
+                    { 
+                        question: "In welcher Stadt hast du am liebsten Cappuccino oder heiße Schokolade getrunken?", 
+                        answers: ["Lauchhammer", "Senftenberg", "Finsterwalde", "Elsterwerda"], 
+                        correct: 1 
+                    },
+                    { 
+                        question: "Weches Auto machte dich in vergangenen jungen Jahren am glücklichsten?", 
+                        answers: ["Peugeot", "Wartburg", "Trabbi", "Opel"], 
+                        correct: 2 
+                    },
+                    { 
+                        question: "Was war dein Lieblings-Weihnachtfilm mit deiner Mama? ", 
+                        answers: ["Prinzessin mit dem goldenen Stern", "Drei Haselnüsse für Aschenbrödel", "Die Schneekönigin", "Das kalte Herz"], 
+                        correct: 0 
+                    }
+                ]
+            },
+            { 
+                host: "Sven", 
+                img: "Bilder/Sven.png", 
+                prize: 100,
+                questions: [
+                    { 
+                        question: "In welcher Disco hast du mich zu Jugendzeiten immer mitgenommen?", 
+                        answers: ["Blue Sky", "Wandelhof", "MuFa", "Downtowns"], 
+                        correct: 0 
+                    },
+                    { 
+                        question: "Wie hieß unser gemeinsamer Rodelberg, den wir sehr gern mit dem Schlitten besuchten?", 
+                        answers: ["Das Schwein", "Die Ente", "Die Katze", "Der Hund"], 
+                        correct: 1 
+                    },
+                    { 
+                        question: "Welches Jugendmagazin bescherte uns schon zu DDR-Zeiten hitzige Debatten?", 
+                        answers: ["Wendy", "Limit", "Popcorn", "Bravo"], 
+                        correct: 3 }
+                ]
+            },
+            { 
+                host: "Felix", 
+                img: "Bilder/Felix.png",
+                prize: 100,
+                questions: [
+                    { 
+                        question: "In welche Richtung konnte ich mich zuerst fortbewegen?", 
+                        answers: ["vorwärts", "seitwärts", "rückwärts", "garnicht, sitzen eh besser"], 
+                        correct: 2 
+                    },
+                    { 
+                        question: "Ohne wen konnte ich patu nie einschlafen", 
+                        answers: ["Mausi", "Hundi", "Tausendfüßler", "Bob der Baumeister"], 
+                        correct: 0 
+                    },
+                    { 
+                        question: "Manchmal muss man gar nichts richtig machen, um zu gewinnen – das musste ich ja auch nicht, um dich zu bekommen. Deshalb wollte ich einfach mal Danke sagen für alles, was du für mich und uns getan hast und wie viel du geopfert hast, damit wir glücklich sein können. Danke von ganzem Herzen, du bist die Beste! <3 Danke für alles! :)", 
+                        answers: ["Richtig", "Korrekt", "Ja", "Das lieber nicht anklicken! oder doch?"], 
+                        correct: -1 
+                    }
+                ]
+            },
+            { 
+                host: "Fabian", 
+                img:"Bilder/Fabian.jpg",
+                prize: 50,
+                questions: [
+                    { 
+                    question: "Welches ...... Hühnchen will ich?", 
+                    answers: ["gekochtes", "fritiertes", "gebratenes", "frittites"], 
+                    correct: 3 
+                    },
+                    { 
+                        question: "Welche Ampel wurde damals im Zeitraum von 2010 - 2012 verwendet?", 
+                        answers: ["manuelle", "induktive", "ontomatische", "automatische"], 
+                        correct: 2 
+                    },
+                    { 
+                        question: "Wie trank ich damals als Kleinkind", 
+                        answers: ["aus der Nukkelflasche", "aus dem Glas", "wie ein Mann ohne den Nukkel", "Strohhalm"], 
+                        correct: 2 
+                    }
+                ]
+            },
+            { 
+                host: "Maja", 
+                img:"Bilder/Maja.png",
+                prize: 70,
+                questions: [
+                    { 
+                        question: "Was war mein Lieblingskuscheltier", 
+                        answers: ["Wauzi", "Mizi", "Octopus", "Schäfchen"], 
+                        correct: 0 
+                    },
+                    { 
+                        question: "Welches Wort konnte ich früher nie aussprechen?", 
+                        answers: ["Steinbach-Hallenberg", "Pinguin", "automatisch", "Staubsauger"], 
+                        correct: 3 
+                    },
+                    { 
+                        question: "Was esse ich bis heute am liebsten?", 
+                        answers: ["alles mit viel Gemüse", "Lasagne", "Lachs", "Brot"], 
+                        correct: 1 
+                    }
+                ]
+            },
+            { 
+                host: "Marko", 
+                img:"Bilder/Marko.png",
+                prize: 1000,
+                questions: [
+                    { 
+                        question: "In welcher Stadt haben wir uns zuerst getroffen? ", 
+                        answers: ["Meiningen", "Lauchhammer", "Altenburg", "Riesa"], 
+                        correct: 2 
+                    },
+                    { 
+                        question: "Wie hieß der Ort von unserem Urlaub an der Ostsee", 
+                        answers: ["Bergen", "Sassnitz", "Poseritz", "Göhren"], 
+                        correct: 2 
+                    },
+                    { 
+                        question: "Wie heißt der berühmte ..... Pliz", 
+                        answers: ["Milschpilz", "Fliegenpilz", "Steinpilz", "Parasol"], 
+                        correct: 0 
+                    }
+                ]
+            }
+        ];
+
+        let activeCategoryIndex = null;
+        let currentQuestionIndex = 0; 
+        let totalPrizeMoney = 0;
+        const completedCategories = [false, false, false, false, false, false];
+
+        const categorySelector = document.getElementById('category-selector');
+        const quizUi = document.getElementById('quiz-ui');
+        const questionText = document.getElementById('question-text');
+        const winPopup = document.getElementById('win-popup');
+        const totalMoneyDisplay = document.getElementById('total-money');
+        
+        const qmLabel = document.getElementById('quizmaster-label');
+        const qmPhotoText = document.getElementById('quizmaster-photo-text');
+        const qmPhotoBox = document.getElementById('quizmaster-photo-box');
+
+        function startCategory(index) {
+            if (completedCategories[index]) return; 
+
+            activeCategoryIndex = index;
+            currentQuestionIndex = 0; 
+            categorySelector.style.display = 'none'; 
+            quizUi.style.display = 'flex';           
+
+            const data = quizData[index];
+            
+            // Quizmaster anpassen
+            qmPhotoBox.classList.remove('fade-in');
+            void qmPhotoBox.offsetWidth; 
+            qmPhotoBox.classList.add('fade-in');
+            qmLabel.innerText = data.host;
+            
+            if (data.img) {
+                qmPhotoBox.innerHTML = `<img src="${data.img}" alt="${data.host}">`;
+            } else {
+                qmPhotoBox.innerHTML = `<span id="quizmaster-photo-text">📸<br>Foto von<br>${data.host}</span>`;
+            }
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const category = quizData[activeCategoryIndex];
+            const currentQ = category.questions[currentQuestionIndex];
+
+            questionText.innerText = `Frage ${currentQuestionIndex + 1}/3: ${currentQ.question}`;
+            
+            for(let i = 0; i < 4; i++) {
+                document.getElementById('ans-' + i).innerText = currentQ.answers[i];
+            }
+        }
+     
+        function checkAnswer(selectedIndex) {
+            const category = quizData[activeCategoryIndex];
+            const currentQ = category.questions[currentQuestionIndex];
+            
+            // NEUE LOGIK: Wenn die korrekte Antwort -1 ist, ist IMMER alles richtig!
+            // Ansonsten prüfen wir auf die Zahl im "correct" Feld
+            if (currentQ.correct === -1 || selectedIndex === currentQ.correct) {
+                // Richtig!
+                currentQuestionIndex++;
+
+                if (currentQuestionIndex < category.questions.length) {
+                    loadQuestion();
+                } else {
+                    // KATEGORIE GEMEISTERT!
+                    completedCategories[activeCategoryIndex] = true;
+                    
+                    // Individuelles Preisgeld addieren
+                    let gewonnen = category.prize;
+                    totalPrizeMoney += gewonnen;
+                    
+                    const card = document.getElementById('cat-' + activeCategoryIndex);
+                    card.classList.add('disabled');
+                    
+                    // Text im Popup aktualisieren
+                    document.getElementById('win-amount').innerText = "+ " + gewonnen + " €";
+
+                    triggerConfetti();
+
+                    quizUi.style.display = 'none';
+                    winPopup.style.display = 'block';
+                }
+            } else {
+                alert("❌ Schade, das war leider falsch! Probiere es einfach noch einmal.");
+            }
+        }
+
+        function closeWinPopup() {
+            winPopup.style.display = 'none';
+            categorySelector.style.display = 'grid'; 
+            
+            // Quizmaster Bild zurücksetzen
+            qmPhotoBox.classList.remove('fade-in');
+            void qmPhotoBox.offsetWidth;
+            qmPhotoBox.classList.add('fade-in');
+            qmLabel.innerText = "Quizmaster";
+            qmPhotoBox.innerHTML = `<span id="quizmaster-photo-text">📸<br>Warte auf<br>Auswahl...</span>`;
+
+            // Kontostand aktualisieren
+            totalMoneyDisplay.innerText = `${totalPrizeMoney} €`;
+
+            if (completedCategories.every(status => status === true)) {
+                setTimeout(() => {
+                    alert(`HERZLICHEN GLÜCKWUNSCH! 🏆\n\nDu hast das gesamte Geburtstagsquiz gemeistert und unglaubliche ${totalPrizeMoney}€ erspielt! Das Geld gibt es dann in Amsterdam! 🚲🎉`);
+                }, 800);
+            }
+        }
+
+        function triggerConfetti() {
+            var duration = 4 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({ particleCount: 6, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, colors: ['#facc15', '#38bdf8', '#ffffff'] });
+                confetti({ particleCount: 6, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors: ['#facc15', '#38bdf8', '#ffffff'] });
+
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+    </script>
+</body>
+</html>
